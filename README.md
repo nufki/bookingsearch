@@ -1,6 +1,16 @@
 # BookingSearch API
 
 The application exposes simple REST endpoints to search bookings using Apache Lucene.
+The current setup uses the standard lucene stack which is:
+StandardAnalyzer, TextField, MultiFieldQueryParser, IndexSearcher.search(...)
+Documents are broken down into terms (tokenization, lowercasing, stop words, etc.).
+An inverted index is built: for each term, there is a postings list with the document IDs in which that term occurs.
+When a query (e.g. migros, netflix, …) is made, Lucene checks: which documents contain these terms?
+Then it calculates a score for each document, by default BM25 (previously TF-IDF).
+This is not a classical vector search in the embedding sense, but terms are discrete tokens.
+Relevance is based on term frequency, document length, inverse document frequency, etc.
+Matching works, for example, like “document contains netflix”, and then results are sorted by score.
+No Euclidean distance, no embeddings – unless you build something custom yourself with NumericFields or similar. 
 
 ## Endpoints
 
