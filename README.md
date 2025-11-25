@@ -84,14 +84,6 @@ Only bookings from account `ACC-3`:
 curl "http://localhost:8080/bookings/search?q=ACC-3"
 ```
 
-Combine account and text (e.g. only Netflix bookings on `ACC-3`):
-
-```bash
-curl "http://localhost:8080/bookings/search?q=ACC-3 netflix"
-```
-
----
-
 ### 3. Match-all queries
 
 All bookings (match all) with a limit of 100 results:

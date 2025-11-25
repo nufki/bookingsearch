@@ -153,7 +153,7 @@ class BookingSearchService {
             add(TextField("bookingTextNorm", normalizedText, Field.Store.NO))
         }
 
-    fun searchBookings(queryString: String?, limit: Int = 20): List<BookingSearchResult> {
+    fun searchBookings(queryString: String?, limit: Int = 20): BookingSearchResponse {
         val queryText = queryString?.trim().orEmpty()
 
         DirectoryReader.open(directory).use { reader ->
@@ -169,7 +169,7 @@ class BookingSearchService {
 
             val topDocs: TopDocs = searcher.search(query, limit)
 
-            return topDocs.scoreDocs.map { scoreDoc ->
+            var results = topDocs.scoreDocs.map { scoreDoc ->
                 val luceneDoc: Document = searcher.storedFields().document(scoreDoc.doc)
 
                 val idStr: String = luceneDoc["id"] ?: error("Missing 'id' field")
@@ -190,6 +190,12 @@ class BookingSearchService {
                     score = scoreDoc.score
                 )
             }
+
+            return BookingSearchResponse(
+                total = topDocs.totalHits.value,
+                limit = limit,
+                results = results
+            )
         }
     }
 }

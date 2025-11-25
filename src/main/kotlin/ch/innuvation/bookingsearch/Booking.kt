@@ -19,3 +19,10 @@ data class BookingSearchResult(
     val bookingText: String,
     val score: Float
 )
+
+data class BookingSearchResponse(
+    val total: Long,
+    val limit: Int,
+    val results: List<BookingSearchResult>
+)
+
